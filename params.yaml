@@ -1,0 +1,10 @@
+seed: 1989
+
+noise_levels:
+  - 20
+  - 10
+  - 0
+  - -10
+
+languages:
+  - en

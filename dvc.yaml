@@ -1,0 +1,43 @@
+stages:
+  text_phoneme:
+    foreach: ${languages}
+    do:
+      cmd: python text_phoneme.py --lang ${item} 
+      deps:
+        - text_phoneme.py
+        - data/raw/${item}/wav/
+      outs:
+        - data/manifests/${item}/clean.jsonl
+
+  add_noise:
+    foreach: ${languages}
+    do:
+      cmd: python add_noise.py --manifest data/manifests/${item}/clean.jsonl --out_dir data/manifests/${item}/noisy/ --seed ${seed} 
+      deps:
+        - add_noise.py
+        - data/manifests/${item}/clean.jsonl
+      params:
+        - seed
+        - noise_levels
+      outs:
+        - data/manifests/${item}/noisy/
+
+  inference:
+    foreach: ${languages}
+    do:
+      cmd: python inference.py --manifest_dir data/manifests/${item}/noisy/ --model facebook/wav2vec2-lv-60-espeak-cv-ft
+      deps:
+        - inference.py
+        - data/manifests/${item}/noisy/noisy.jsonl
+      outs:
+        - data/manifests/${item}/predictions/results.jsonl
+  
+  evaluation:
+    foreach: ${languages}
+    do:
+      cmd: python evaluation.py --manifest_dir data/manifests/${item}/predictions/results.jsonl --out_csv data/metrics/${item}_evaluation.csv
+      deps:
+        - evaluation.py
+        - data/manifests/${item}/predictions/results.jsonl
+      outs:
+        - data/metrics/${item}_evaluation.csv
