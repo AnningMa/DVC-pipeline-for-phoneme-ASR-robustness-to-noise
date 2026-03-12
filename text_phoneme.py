@@ -4,14 +4,14 @@ import subprocess
 import soundfile as sf
 import argparse
 
-def get_phonemes(text):
+def get_phonemes(text,lang):
     result = subprocess.run(
-        ['espeak-ng', '-q', '-x', text],
+        ['espeak-ng', '-q', '-v', lang,'--ipa=3', text],
         capture_output=True,
         text=True,
         check=True
     )
-    return result.stdout.strip()
+    return result.stdout.strip().replace('_', ' ')
 
 def main():
     parser = argparse.ArgumentParser(description="Prepare manifest for audio dataset.")
@@ -78,7 +78,7 @@ def main():
 
             data, sr = sf.read(wav_path)
             duration_s = round(len(data) / sr, 2)
-            ref_pho = get_phonemes(ref_text)
+            ref_pho = get_phonemes(ref_text, current_lang)
             
             record = {
                 "utt_id": f"{current_lang}_{stem}",

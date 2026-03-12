@@ -25,7 +25,7 @@ stages:
   inference:
     foreach: ${languages}
     do:
-      cmd: python inference.py --manifest_dir data/manifests/${item}/noisy/ --model facebook/wav2vec2-lv-60-espeak-cv-ft
+      cmd: python inference.py --manifest data/manifests/${item}/noisy/noisy.jsonl --out_manifest data/manifests/${item}/predictions/results.jsonl --model_id facebook/wav2vec2-lv-60-espeak-cv-ft
       deps:
         - inference.py
         - data/manifests/${item}/noisy/noisy.jsonl
@@ -35,7 +35,7 @@ stages:
   evaluation:
     foreach: ${languages}
     do:
-      cmd: python evaluation.py --manifest_dir data/manifests/${item}/predictions/results.jsonl --out_csv data/metrics/${item}_evaluation.csv
+      cmd: python evaluation.py --manifest data/manifests/${item}/predictions/results.jsonl --out_csv data/metrics/${item}_evaluation.csv
       deps:
         - evaluation.py
         - data/manifests/${item}/predictions/results.jsonl

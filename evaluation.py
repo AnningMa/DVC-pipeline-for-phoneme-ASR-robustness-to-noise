@@ -11,10 +11,10 @@ def clean_phonemes(text):
         return ""
 
     #remove stress markers, length markers, punctuation, and special symbols
-    cleaned = re.sub(r'[ˈˌː.,?!;:()\[\]]', '', text)
+    cleaned = re.sub(r'[ˈˌː.,?!;:()\[\]\u200d\u0361\u035c]', '', text)
     cleaned = re.sub(r'\s+', ' ', cleaned)
 
-    return cleaned.strip()
+    return ' '.join(list(cleaned))
 
 def main():
     parser = argparse.ArgumentParser(description="Evaluate Phoneme Error Rate (PER).")

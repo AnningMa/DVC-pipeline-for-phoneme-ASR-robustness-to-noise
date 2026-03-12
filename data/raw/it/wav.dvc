@@ -1,0 +1,6 @@
+outs:
+- md5: 829395b5221aaa26d561e24265a0ef03.dir
+  size: 3328446
+  nfiles: 64
+  hash: md5
+  path: wav

@@ -4,6 +4,8 @@ import argparse
 import torch
 import torchaudio
 from transformers import Wav2Vec2Processor, Wav2Vec2ForCTC
+import soundfile as sf
+
 
 def main():
     parser = argparse.ArgumentParser(description="Run phoneme recognition inference.")
@@ -41,10 +43,12 @@ def main():
                 print(f"Skipping: File not found {wav_path}")
                 continue
 
-            waveform, sr = torchaudio.load(wav_path)
+            waveform, sr = sf.read(wav_path)
+            waveform = torch.from_numpy(waveform).float()
             
-            if waveform.shape[0] > 1:
-                waveform = torch.mean(waveform, dim=0, keepdim=True)
+            if waveform.ndim == 1:
+                waveform = waveform.unsqueeze(0)
+                           
 
             if sr != target_sr:
                 resampler = torchaudio.transforms.Resample(orig_freq=sr, new_freq=target_sr)

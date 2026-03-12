@@ -1,0 +1,318 @@
+schema: '2.0'
+stages:
+  text_phoneme@en:
+    cmd: python text_phoneme.py --lang en
+    deps:
+    - path: data/raw/en/wav/
+      hash: md5
+      md5: 7ed63c27b4ec00075ce1bf9c8ed5da6e.dir
+      size: 1535632
+      nfiles: 38
+    - path: text_phoneme.py
+      hash: md5
+      md5: f1635f297d6910f3abbaa96279353e70
+      size: 4075
+    outs:
+    - path: data/manifests/en/clean.jsonl
+      hash: md5
+      md5: fd220c27895e05636a1af656a3e69804
+      size: 3113
+  add_noise@en:
+    cmd: python add_noise.py --manifest data/manifests/en/clean.jsonl --out_dir 
+      data/manifests/en/noisy/ --seed 1989
+    deps:
+    - path: add_noise.py
+      hash: md5
+      md5: 4e5780b8c9a0ff29c8c1784ee83aece9
+      size: 3696
+    - path: data/manifests/en/clean.jsonl
+      hash: md5
+      md5: fd220c27895e05636a1af656a3e69804
+      size: 3113
+    params:
+      params.yaml:
+        noise_levels:
+        - 20
+        - 10
+        - 0
+        - -10
+        seed: 1989
+    outs:
+    - path: data/manifests/en/noisy/
+      hash: md5
+      md5: d5d08b2d7402e8fd8004ed28febeeb32.dir
+      size: 19331988
+      nfiles: 41
+  inference@en:
+    cmd: python inference.py --manifest data/manifests/en/noisy/noisy.jsonl 
+      --out_manifest data/manifests/en/predictions/results.jsonl --model_id 
+      facebook/wav2vec2-lv-60-espeak-cv-ft
+    deps:
+    - path: data/manifests/en/noisy/noisy.jsonl
+      hash: md5
+      md5: ead542ee55963b07c9a38fc12ff59303
+      size: 13492
+    - path: inference.py
+      hash: md5
+      md5: e8c755d3dd50cd5e922380568e48b873
+      size: 2963
+    outs:
+    - path: data/manifests/en/predictions/results.jsonl
+      hash: md5
+      md5: 9913c2a101d80420795c17fe2e4fd9e5
+      size: 16163
+  evaluation@en:
+    cmd: python evaluation.py --manifest 
+      data/manifests/en/predictions/results.jsonl --out_csv 
+      data/metrics/en_evaluation.csv
+    deps:
+    - path: data/manifests/en/predictions/results.jsonl
+      hash: md5
+      md5: 9913c2a101d80420795c17fe2e4fd9e5
+      size: 16163
+    - path: evaluation.py
+      hash: md5
+      md5: b89ac7ecc53d004c3c7b1f62f9cca56e
+      size: 3192
+    outs:
+    - path: data/metrics/en_evaluation.csv
+      hash: md5
+      md5: 92f8f96ae72bec2a9bdb0753276235fa
+      size: 87
+  text_phoneme@it:
+    cmd: python text_phoneme.py --lang it
+    deps:
+    - path: data/raw/it/wav/
+      hash: md5
+      md5: 829395b5221aaa26d561e24265a0ef03.dir
+      size: 3328446
+      nfiles: 64
+    - path: text_phoneme.py
+      hash: md5
+      md5: f1635f297d6910f3abbaa96279353e70
+      size: 4075
+    outs:
+    - path: data/manifests/it/clean.jsonl
+      hash: md5
+      md5: 8604231bf8fa9ad8c6d0a67251ca91cb
+      size: 5738
+  text_phoneme@ja:
+    cmd: python text_phoneme.py --lang ja
+    deps:
+    - path: data/raw/ja/wav/
+      hash: md5
+      md5: 850d2881828ca8d5c9914ab9f50ed753.dir
+      size: 1598235
+      nfiles: 44
+    - path: text_phoneme.py
+      hash: md5
+      md5: f1635f297d6910f3abbaa96279353e70
+      size: 4075
+    outs:
+    - path: data/manifests/ja/clean.jsonl
+      hash: md5
+      md5: 9214a096145714a55fee719ead00bd4b
+      size: 6784
+  text_phoneme@fr:
+    cmd: python text_phoneme.py --lang fr
+    deps:
+    - path: data/raw/fr/wav/
+      hash: md5
+      md5: ed58d03d252d375fcdf55fe53a14948f.dir
+      size: 3041273
+      nfiles: 60
+    - path: text_phoneme.py
+      hash: md5
+      md5: f1635f297d6910f3abbaa96279353e70
+      size: 4075
+    outs:
+    - path: data/manifests/fr/clean.jsonl
+      hash: md5
+      md5: 808582e1b584f4aa5e1045ca3c35b9db
+      size: 5129
+  add_noise@it:
+    cmd: python add_noise.py --manifest data/manifests/it/clean.jsonl --out_dir 
+      data/manifests/it/noisy/ --seed 1989
+    deps:
+    - path: add_noise.py
+      hash: md5
+      md5: 4e5780b8c9a0ff29c8c1784ee83aece9
+      size: 3696
+    - path: data/manifests/it/clean.jsonl
+      hash: md5
+      md5: 8604231bf8fa9ad8c6d0a67251ca91cb
+      size: 5738
+    params:
+      params.yaml:
+        noise_levels:
+        - 20
+        - 10
+        - 0
+        - -10
+        seed: 1989
+    outs:
+    - path: data/manifests/it/noisy/
+      hash: md5
+      md5: c1f6762001dd1d45fe4d9a7ef6998fe3.dir
+      size: 34545960
+      nfiles: 65
+  add_noise@ja:
+    cmd: python add_noise.py --manifest data/manifests/ja/clean.jsonl --out_dir 
+      data/manifests/ja/noisy/ --seed 1989
+    deps:
+    - path: add_noise.py
+      hash: md5
+      md5: 4e5780b8c9a0ff29c8c1784ee83aece9
+      size: 3696
+    - path: data/manifests/ja/clean.jsonl
+      hash: md5
+      md5: 9214a096145714a55fee719ead00bd4b
+      size: 6784
+    params:
+      params.yaml:
+        noise_levels:
+        - 20
+        - 10
+        - 0
+        - -10
+        seed: 1989
+    outs:
+    - path: data/manifests/ja/noisy/
+      hash: md5
+      md5: 6c546de72e3fcf839d2919cb80dccfa5.dir
+      size: 17379336
+      nfiles: 45
+  add_noise@fr:
+    cmd: python add_noise.py --manifest data/manifests/fr/clean.jsonl --out_dir 
+      data/manifests/fr/noisy/ --seed 1989
+    deps:
+    - path: add_noise.py
+      hash: md5
+      md5: 4e5780b8c9a0ff29c8c1784ee83aece9
+      size: 3696
+    - path: data/manifests/fr/clean.jsonl
+      hash: md5
+      md5: 808582e1b584f4aa5e1045ca3c35b9db
+      size: 5129
+    params:
+      params.yaml:
+        noise_levels:
+        - 20
+        - 10
+        - 0
+        - -10
+        seed: 1989
+    outs:
+    - path: data/manifests/fr/noisy/
+      hash: md5
+      md5: 649f0eae6a03c0e520c159e214f3faf1.dir
+      size: 31958156
+      nfiles: 61
+  inference@it:
+    cmd: python inference.py --manifest data/manifests/it/noisy/noisy.jsonl 
+      --out_manifest data/manifests/it/predictions/results.jsonl --model_id 
+      facebook/wav2vec2-lv-60-espeak-cv-ft
+    deps:
+    - path: data/manifests/it/noisy/noisy.jsonl
+      hash: md5
+      md5: 4ecbc9268c0da81a3102069755eb55a7
+      size: 24616
+    - path: inference.py
+      hash: md5
+      md5: e8c755d3dd50cd5e922380568e48b873
+      size: 2963
+    outs:
+    - path: data/manifests/it/predictions/results.jsonl
+      hash: md5
+      md5: 72f43f4dcb3dcaf2461c4c99ccb8502e
+      size: 30998
+  inference@ja:
+    cmd: python inference.py --manifest data/manifests/ja/noisy/noisy.jsonl 
+      --out_manifest data/manifests/ja/predictions/results.jsonl --model_id 
+      facebook/wav2vec2-lv-60-espeak-cv-ft
+    deps:
+    - path: data/manifests/ja/noisy/noisy.jsonl
+      hash: md5
+      md5: 835f637d82a331b0836b0c8a2e28e8e2
+      size: 28280
+    - path: inference.py
+      hash: md5
+      md5: e8c755d3dd50cd5e922380568e48b873
+      size: 2963
+    outs:
+    - path: data/manifests/ja/predictions/results.jsonl
+      hash: md5
+      md5: 47ffcac984a4fc1cc76a12905d167a47
+      size: 30929
+  inference@fr:
+    cmd: python inference.py --manifest data/manifests/fr/noisy/noisy.jsonl 
+      --out_manifest data/manifests/fr/predictions/results.jsonl --model_id 
+      facebook/wav2vec2-lv-60-espeak-cv-ft
+    deps:
+    - path: data/manifests/fr/noisy/noisy.jsonl
+      hash: md5
+      md5: 69501b4754e6747c70abf86a20db29f7
+      size: 22076
+    - path: inference.py
+      hash: md5
+      md5: e8c755d3dd50cd5e922380568e48b873
+      size: 2963
+    outs:
+    - path: data/manifests/fr/predictions/results.jsonl
+      hash: md5
+      md5: 4569ec29728e2c76ba10b2f6d06c4f50
+      size: 27202
+  evaluation@it:
+    cmd: python evaluation.py --manifest 
+      data/manifests/it/predictions/results.jsonl --out_csv 
+      data/metrics/it_evaluation.csv
+    deps:
+    - path: data/manifests/it/predictions/results.jsonl
+      hash: md5
+      md5: 72f43f4dcb3dcaf2461c4c99ccb8502e
+      size: 30998
+    - path: evaluation.py
+      hash: md5
+      md5: b89ac7ecc53d004c3c7b1f62f9cca56e
+      size: 3192
+    outs:
+    - path: data/metrics/it_evaluation.csv
+      hash: md5
+      md5: 2a0ff25c6e66125cb0b17021caa0bff9
+      size: 88
+  evaluation@ja:
+    cmd: python evaluation.py --manifest 
+      data/manifests/ja/predictions/results.jsonl --out_csv 
+      data/metrics/ja_evaluation.csv
+    deps:
+    - path: data/manifests/ja/predictions/results.jsonl
+      hash: md5
+      md5: 47ffcac984a4fc1cc76a12905d167a47
+      size: 30929
+    - path: evaluation.py
+      hash: md5
+      md5: b89ac7ecc53d004c3c7b1f62f9cca56e
+      size: 3192
+    outs:
+    - path: data/metrics/ja_evaluation.csv
+      hash: md5
+      md5: d8cdfb867dc75a3b3e6e21bd93713989
+      size: 88
+  evaluation@fr:
+    cmd: python evaluation.py --manifest 
+      data/manifests/fr/predictions/results.jsonl --out_csv 
+      data/metrics/fr_evaluation.csv
+    deps:
+    - path: data/manifests/fr/predictions/results.jsonl
+      hash: md5
+      md5: 4569ec29728e2c76ba10b2f6d06c4f50
+      size: 27202
+    - path: evaluation.py
+      hash: md5
+      md5: b89ac7ecc53d004c3c7b1f62f9cca56e
+      size: 3192
+    outs:
+    - path: data/metrics/fr_evaluation.csv
+      hash: md5
+      md5: c5cb25a3ffe5660b92494f64273436be
+      size: 88
